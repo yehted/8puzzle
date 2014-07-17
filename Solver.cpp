@@ -10,6 +10,10 @@ Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(p
 	priority_ = moves_ + board.manhattan();
 }
 
+Solver::Node::~Node() {
+	
+}
+
 bool Solver::Node::operator<(const Node& rhs) {
 	if (priority_ < rhs.priority_) return true;
 	else return false;
@@ -18,6 +22,16 @@ bool Solver::Node::operator<(const Node& rhs) {
 Solver::Solver() : totalmoves_(0), solveable_(false) {}
 
 Solver::Solver(Board& initial) {
+	MinPQ<Node> pq;
+	MinPQ<Node> twinpq;
+
+	Board twin = initial.twin();
+	std::stack<Board> s;
+
+	Node first(initial, 0, NULL);
+	pq.insert(first);
+
+	Node node = pq.delMin();
 
 }
 

@@ -15,6 +15,9 @@ private:
 	public:
 		Node();
 		Node(Board &board, int moves, Node* prev);
+		~Node();
+		Node(const Node& that);
+		Node& operator=(const Node& that);
 		bool operator<(const Node& rhs);
 		friend std::ostream& operator<<(std::ostream& output, const Node& that) {
 			output << "Priority: " << that.priority_ << std::endl;
@@ -24,9 +27,10 @@ private:
 	private:
 		int moves_;
 		int priority_;
-		Board board_;
+		Board& board_;
 		Node* prev_;
 	};
+
 	int totalmoves_;
 	bool solveable_;
 	std::stack<Board> s;

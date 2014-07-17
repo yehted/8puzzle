@@ -21,7 +21,18 @@ template <class T>
 class MinPQ {
 public:
 	// Initializes empty priority queue
-	MinPQ() { this(1); }
+	MinPQ() : N_(0), cap_(1) {
+		pq_ = new T[1];
+	}
+
+	// Destructor
+	~MinPQ() { delete[] pq_; }
+
+	// Copy constructor
+	MinPQ(const MinPQ& that);
+
+	// Copy assignment operator
+	MinPQ& operator=(const MinPQ& that);
 
 	// Initializes a priorty queue with the given initial capacity
 	MinPQ(int initCapacity) : N_(0), cap_(initCapacity) {
@@ -65,9 +76,9 @@ public:
 	T delMin() {
 		if (isEmpty()) throw std::out_of_range("Priority queue underflow");
 		exch(1, N_);
-		T min = pq[N_--];
+		T min = pq_[N_--];
 		sink(1);
-		pq[N_ + 1] = NULL;
+		delete pq_[N_ + 1];
 		if ((N_ > 0) && (N_ == (cap_ - 1) / 4)) resize(cap_ / 2);
 		assert(isMinHeap());
 		return min;
