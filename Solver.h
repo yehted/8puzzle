@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "MinPQ.h"
 #include <stack>
 
 class Solver {
