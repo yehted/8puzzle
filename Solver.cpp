@@ -53,11 +53,11 @@ int test(int argc, char* argv[]) {
 	Solver solver(board);
 
 	// Print solution to standard output
-	if (!solver.isSolvable)
+	if (!solver.isSolvable())
 		cout << "No solution possible!" << endl;
 	else {
-		cout << "Minimum number of moves = " << solver.moves << endl;
-		for_each()
+		cout << "Minimum number of moves = " << solver.moves() << endl;
+	//	for_each()
 	}
 	return 0;
 }
