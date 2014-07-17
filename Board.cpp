@@ -7,6 +7,7 @@ Board::Board(int** blocks, int N) : N_(N), manhattan_(0) {
 	tiles_ = new int*[N];
 	for (int i = 0; i < N; ++i)
 		tiles_[i] = new int[N];
+
 	int cur, x, y;
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
@@ -21,6 +22,46 @@ Board::Board(int** blocks, int N) : N_(N), manhattan_(0) {
 			}
 		}
 	}
+}
+
+Board::~Board() {
+	for (int i = 0; i < N_; ++i)
+		delete[] tiles_[i];
+	delete[] tiles_;
+}
+
+Board::Board(const Board& that) : N_(that.N_), manhattan_(that.manhattan_) {
+	for (int i = 0; i < N_; i++) {
+		for (int j = 0; j < N_; j++)
+			tiles_[i][j] = that.tiles_[i][j];
+	}
+}
+
+Board& Board::operator=(const Board& that) {
+	if (*this == that) return *this;
+
+	// Free memory
+	for (int i = 0; i < N_; ++i)
+		delete[] tiles_[i];
+	delete[] tiles_;
+
+	// Allocate new memory
+	int** newtiles = new int*[that.N_];
+	for (int i = 0; i < that.N_; ++i)
+		newtiles[i] = new int[that.N_];
+
+	// Copy elements
+	for (int i = 0; i < that.N_; i++) {
+		for (int j = 0; j < that.N_; j++)
+			newtiles[i][j] = that.tiles_[i][j];
+	}
+
+	// Assign variables
+	tiles_ = newtiles;
+	manhattan_ = that.manhattan_;
+	N_ = that.N_;
+
+	return *this;
 }
 
 int Board::dimension() { return N_; }

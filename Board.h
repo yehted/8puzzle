@@ -5,6 +5,9 @@ class Board {
 public:
 	Board();
 	Board(int** blocks, int N);
+	~Board();
+	Board(const Board& that);
+	Board& operator=(const Board& that);
 	int dimension();
 	int hamming();
 	int manhattan();
@@ -15,7 +18,7 @@ public:
 //	Iterable<Board> neighbors();
 
 private:
-	const int N_;
+	int N_;
 	int** tiles_;
 	int manhattan_;
 };
