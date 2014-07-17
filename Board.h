@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 class Board {
 public:
@@ -6,6 +7,7 @@ public:
 	Board(int** blocks, int N);
 	int dimension();
 	int hamming();
+	int manhattan();
 	bool isGoal();
 	Board twin();
 	bool operator==(const Board &rhs);
