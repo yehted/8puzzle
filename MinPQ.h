@@ -20,12 +20,15 @@ Sedgewick and Kevin Wayne.*/
 template <class T>
 class MinPQ {
 public:
+	// Initializes empty priority queue
 	MinPQ() { this(1); }
 
+	// Initializes a priorty queue with the given initial capacity
 	MinPQ(int initCapacity) : N_(0), cap_(initCapacity) {
 		pq_ = new T[initCapacity];
 	}
 
+	// Initializes a priority queue from an array of keys
 	MinPQ(T* keys, int N) : N_(N), cap_(N + 1) {
 		pq_ = new T[N + 1];
 		for (int i = 0; i < N; i++)
@@ -35,15 +38,19 @@ public:
 		assert(isMinHeap());
 	}
 
+	// Is the priority queue empty?
 	bool isEmpty() { return N_ == 0; }
 
+	// Returns the number of keys on the priority queue
 	int size() { return N_; }
 
+	// Returns the smallest key on the priority queue
 	T min() {
 		if (isEmpty()) throw std::out_of_range("Priority queue underflow");
 		return pq_[1];
 	}
 
+	// Adds a new key to the priority queue
 	void insert(T& x) {
 		// double size of array if necessary
 		if (N_ == cap_ - 1) resize(2 * cap_);
@@ -54,6 +61,7 @@ public:
 		assert(isMinHeap());
 	}
 
+	// Removes and returns smallest key on the priority queue
 	T delMin() {
 		if (isEmpty()) throw std::out_of_range("Priority queue underflow");
 		exch(1, N_);
@@ -70,6 +78,7 @@ private:
 	int N_;		// number of items on priority queue
 	int cap_;	// capacity of the priority queue array
 
+	// Helper function to change the size of the heap array
 	void resize(int capacity) {
 		assert(cap_ > N_);
 		T* tmp = new T[capacity];
@@ -78,6 +87,9 @@ private:
 		pq_ = tmp;
 	}
 
+	/***********************************************************
+	* Helper functions to maintain heap invariant
+	************************************************************/
 	void swim(int k) {
 		while (k > 1 && greater(k / 2, k)) {
 			exch(k, k / 2);
@@ -94,6 +106,9 @@ private:
 		}
 	}
 
+	/***********************************************************
+	* Helper functions for compares and swaps
+	************************************************************/
 	bool greater(int i, int j) {
 		return (pq_[i] > pq_[j]);
 	}
