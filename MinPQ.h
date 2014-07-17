@@ -19,10 +19,26 @@ class MinPQ {
 public:
 	MinPQ();
 	MinPQ(int initCapacity);
-
+	MinPQ(T* keys);
+	bool isEmpty();
+	int size();
+	T min();
+	void insert(T x);
+	T delMin();
 
 private:
 	T* pq;		// stores items at indices 1 to N
 	int N;		// number of items on priority queue
+	void resize(int capacity);
+	void swim(int k);
+	void sink(int k);
+	bool greater(int i, int j);
+	void exch(int i, int j);
+	bool isMinHeap();
+	bool isMinHeap(int k);
+};
+
+template <class T>
+class HeapIterator {
 
 };
