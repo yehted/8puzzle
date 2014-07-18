@@ -78,7 +78,7 @@ public:
 		exch(1, N_);
 		T min = pq_[N_--];
 		sink(1);
-		delete pq_[N_ + 1];
+//		delete pq_[N_ + 1];
 		if ((N_ > 0) && (N_ == (cap_ - 1) / 4)) resize(cap_ / 2);
 		assert(isMinHeap());
 		return min;
@@ -94,7 +94,7 @@ private:
 		assert(cap_ > N_);
 		T* tmp = new T[capacity];
 		for (int i = 1; i <= N_; i++)
-			temp[i] = pq[i];
+			tmp[i] = pq_[i];
 		pq_ = tmp;
 	}
 

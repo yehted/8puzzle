@@ -14,8 +14,8 @@ Solver::Node::~Node() {
 	
 }
 
-bool Solver::Node::operator<(const Node& rhs) {
-	if (priority_ < rhs.priority_) return true;
+bool Solver::Node::operator>(const Node& rhs) {
+	if (priority_ > rhs.priority_) return true;
 	else return false;
 }
 
