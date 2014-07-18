@@ -14,6 +14,14 @@ Solver::Node::~Node() {
 	
 }
 
+Solver::Node::Node(const Node& that) {
+
+}
+
+Solver::Node& Solver::Node::operator=(const Node& that) {
+	return *this;
+}
+
 bool Solver::Node::operator>(const Node& rhs) {
 	if (priority_ > rhs.priority_) return true;
 	else return false;
