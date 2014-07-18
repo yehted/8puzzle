@@ -10,6 +10,9 @@
 * Figure out how to implement equivalent of an iterable interface in C++
 
 ### Things I've learned ###
+* In Java, you can set an element of an array to null to help with garbage collection. Apparently, you can't do this in C++ because dynamically allocated memory is allocated as a single region, which can only be freed as a whole, not in parts. See [Link](http://stackoverflow.com/questions/12810928/free-array-element-in-c)
+
+### Notes about git ###
 * use `git revert <commit>` to move back to an older commit
 * use `git fetch origin <commit>` to fetch a remote commit that you want
 * use `git checkout FETCH_HEAD` after the fetch to switch to that branch

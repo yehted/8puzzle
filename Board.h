@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string>
+#include <stack>
 
 class Board {
 public:
@@ -15,10 +15,13 @@ public:
 	Board twin();
 	bool operator==(const Board &rhs);
 	friend std::ostream &operator<<(std::ostream &output, const Board& that);
-//	Iterable<Board> neighbors();
+	std::stack<Board> neighbors();
 
 private:
 	int N_;
 	int** tiles_;
 	int manhattan_;
+
+	void deleteBoard(int** board, int N);
+	int** createBoard(int N);
 };

@@ -21,8 +21,8 @@ template <class T>
 class MinPQ {
 public:
 	// Initializes empty priority queue
-	MinPQ() : N_(0), cap_(1) {
-		pq_ = new T[1];
+	MinPQ() : N_(0), cap_(2) {
+		pq_ = new T[2];
 	}
 
 	// Destructor
@@ -78,7 +78,7 @@ public:
 		exch(1, N_);
 		T min = pq_[N_--];
 		sink(1);
-//		delete pq_[N_ + 1];
+//		pq_[N_ + 1] = NULL; // Can't be done in C++
 		if ((N_ > 0) && (N_ == (cap_ - 1) / 4)) resize(cap_ / 2);
 		assert(isMinHeap());
 		return min;
@@ -95,6 +95,7 @@ private:
 		T* tmp = new T[capacity];
 		for (int i = 1; i <= N_; i++)
 			tmp[i] = pq_[i];
+		delete pq_;
 		pq_ = tmp;
 	}
 

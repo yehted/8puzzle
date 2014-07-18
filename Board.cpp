@@ -4,9 +4,7 @@
 Board::Board() : N_(0), manhattan_(0) {}
 
 Board::Board(int** blocks, int N) : N_(N), manhattan_(0) {
-	tiles_ = new int*[N];
-	for (int i = 0; i < N; ++i)
-		tiles_[i] = new int[N];
+	tiles_ = createBoard(N);
 
 	int cur, x, y;
 	for (int i = 0; i < N; i++) {
@@ -25,12 +23,12 @@ Board::Board(int** blocks, int N) : N_(N), manhattan_(0) {
 }
 
 Board::~Board() {
-	for (int i = 0; i < N_; ++i)
-		delete[] tiles_[i];
-	delete[] tiles_;
+	deleteBoard(tiles_, N_);
 }
 
 Board::Board(const Board& that) : N_(that.N_), manhattan_(that.manhattan_) {
+	tiles_ = createBoard(that.N_);
+
 	for (int i = 0; i < N_; i++) {
 		for (int j = 0; j < N_; j++)
 			tiles_[i][j] = that.tiles_[i][j];
@@ -41,14 +39,10 @@ Board& Board::operator=(const Board& that) {
 	if (*this == that) return *this;
 
 	// Free memory
-	for (int i = 0; i < N_; ++i)
-		delete[] tiles_[i];
-	delete[] tiles_;
+	deleteBoard(tiles_, N_);
 
 	// Allocate new memory
-	int** newtiles = new int*[that.N_];
-	for (int i = 0; i < that.N_; ++i)
-		newtiles[i] = new int[that.N_];
+	int** newtiles = createBoard(N_);
 
 	// Copy elements
 	for (int i = 0; i < that.N_; i++) {
@@ -60,6 +54,8 @@ Board& Board::operator=(const Board& that) {
 	tiles_ = newtiles;
 	manhattan_ = that.manhattan_;
 	N_ = that.N_;
+
+	deleteBoard(newtiles, N_);
 
 	return *this;
 }
@@ -113,6 +109,76 @@ std::ostream& operator<<(std::ostream& output, const Board& that) {
 		output << std::endl;
 	}
 	return output;
+}
+
+std::stack<Board> Board::neighbors() {
+	std::stack<Board> s;
+	int** copy = createBoard(N_);
+
+	int x = 0, y = 0;
+	// Copy board and find blanks
+	for (int i = 0; i < N_; i++) {
+		for (int j = 0; i < N_; j++) {
+			copy[i][j] = tiles_[i][j];
+			if (tiles_[i][j] == 0) {
+				x = i;
+				y = j;
+			}
+		}
+	}
+
+	// swap left
+	if (x > 0) {
+		copy[x][y] = copy[x - 1][y];
+		copy[x - 1][y] = 0;
+		s.push(Board(copy, N_));
+		copy[x - 1][y] = copy[x][y];
+		copy[x][y] = 0;
+	}
+
+	// swap right
+	if (x < N_ - 1) {
+		copy[x][y] = copy[x + 1][y];
+		copy[x + 1][y] = 0;
+		s.push(Board(copy, N_));
+		copy[x + 1][y] = copy[x][y];
+		copy[x][y] = 0;
+	}
+
+	// swap up
+	if (y > 0) {
+		copy[x][y] = copy[x][y - 1];
+		copy[x][y - 1] = 0;
+		s.push(Board(copy, N_));
+		copy[x][y - 1] = copy[x][y];
+		copy[x][y] = 0;
+	}
+
+	// swap down
+	if (y < N_ - 1) {
+		copy[x][y] = copy[x][y + 1];
+		copy[x][y + 1] = 0;
+		s.push(Board(copy, N_));
+		copy[x][y + 1] = copy[x][y];
+		copy[x][y] = 0;
+	}
+
+	deleteBoard(copy, N_);
+
+	return s;
+}
+
+void Board::deleteBoard(int** board, int N) {
+	for (int i = 0; i < N; ++i)
+		delete[] board[i];
+	delete[] board;
+}
+
+int** Board::createBoard(int N) {
+	int** tiles = new int*[N];
+	for (int i = 0; i < N; ++i)
+		tiles[i] = new int[N];
+	return tiles;
 }
 
 int main(int argc, char* argv[]){
