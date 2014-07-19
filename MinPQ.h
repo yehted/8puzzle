@@ -66,7 +66,7 @@ public:
 		// double size of array if necessary
 		if (N_ == cap_ - 1) resize(2 * cap_);
 		
-		// add x, and percolate it up to maintain heap invariant
+		// add x, and percolate it up to maintain heap invariant		
 		pq_[++N_] = x;
 		swim(N_);
 		assert(isMinHeap());

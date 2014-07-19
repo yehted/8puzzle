@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stack>
+#include <Deque.h>
 
 class Board {
 public:
@@ -15,7 +15,7 @@ public:
 	Board twin();
 	bool operator==(const Board &rhs);
 	friend std::ostream &operator<<(std::ostream &output, const Board& that);
-	std::stack<Board> neighbors();
+	Deque<Board> neighbors();
 
 private:
 	int N_;

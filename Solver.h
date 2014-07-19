@@ -1,6 +1,4 @@
 #include "Board.h"
-#include "MinPQ.h"
-#include <stack>
 
 class Solver {
 public:
@@ -30,5 +28,5 @@ private:
 
 	int totalmoves_;
 	bool solveable_;
-	std::stack<Board> s;
+	Deque<Board> s;
 };

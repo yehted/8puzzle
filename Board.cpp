@@ -42,7 +42,7 @@ Board& Board::operator=(const Board& that) {
 	deleteBoard(tiles_, N_);
 
 	// Allocate new memory
-	int** newtiles = createBoard(N_);
+	int** newtiles = createBoard(that.N_);
 
 	// Copy elements
 	for (int i = 0; i < that.N_; i++) {
@@ -111,8 +111,8 @@ std::ostream& operator<<(std::ostream& output, const Board& that) {
 	return output;
 }
 
-std::stack<Board> Board::neighbors() {
-	std::stack<Board> s;
+Deque<Board> Board::neighbors() {
+	Deque<Board> s;
 	int** copy = createBoard(N_);
 
 	int x = 0, y = 0;
@@ -131,7 +131,7 @@ std::stack<Board> Board::neighbors() {
 	if (x > 0) {
 		copy[x][y] = copy[x - 1][y];
 		copy[x - 1][y] = 0;
-		s.push(Board(copy, N_));
+		s.addFirst(Board(copy, N_));
 		copy[x - 1][y] = copy[x][y];
 		copy[x][y] = 0;
 	}
@@ -140,7 +140,7 @@ std::stack<Board> Board::neighbors() {
 	if (x < N_ - 1) {
 		copy[x][y] = copy[x + 1][y];
 		copy[x + 1][y] = 0;
-		s.push(Board(copy, N_));
+		s.addFirst(Board(copy, N_));
 		copy[x + 1][y] = copy[x][y];
 		copy[x][y] = 0;
 	}
@@ -149,7 +149,7 @@ std::stack<Board> Board::neighbors() {
 	if (y > 0) {
 		copy[x][y] = copy[x][y - 1];
 		copy[x][y - 1] = 0;
-		s.push(Board(copy, N_));
+		s.addFirst(Board(copy, N_));
 		copy[x][y - 1] = copy[x][y];
 		copy[x][y] = 0;
 	}
@@ -158,7 +158,7 @@ std::stack<Board> Board::neighbors() {
 	if (y < N_ - 1) {
 		copy[x][y] = copy[x][y + 1];
 		copy[x][y + 1] = 0;
-		s.push(Board(copy, N_));
+		s.addFirst(Board(copy, N_));
 		copy[x][y + 1] = copy[x][y];
 		copy[x][y] = 0;
 	}
@@ -181,7 +181,7 @@ int** Board::createBoard(int N) {
 	return tiles;
 }
 
-int main(int argc, char* argv[]){
+int test(int argc, char* argv[]){
 	int N = 3;
 	int** board = new int*[N];
 	for (int i = 0; i < N; ++i)

@@ -1,4 +1,5 @@
 #include "Solver.h"
+#include "MinPQ.h"
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -22,17 +23,53 @@ Solver::Solver(Board& initial) {
 	MinPQ<Node> twinpq;
 
 	Board twin = initial.twin();
-	std::stack<Board> s;
 
-	Node first(initial, 0, NULL);
-	pq.insert(first);
+	Deque<Board> s;
 
-	Node node = pq.delMin();
+	Node* first = new Node(initial, 0, NULL);
+	Node* firsttwin = new Node(twin, 0, NULL);
 
-	while (!node.board_.isGoal()) {
+	pq.insert(*first);
+	twinpq.insert(*firsttwin);
+
+	Node& node = pq.delMin();
+	Node &twinnode = twinpq.delMin();
+
+	while (!node.board_.isGoal() && !twinnode.board_.isGoal()) {
+		// Main solver
 		for (Board near : node.board_.neighbors()) {
-
+			Node* next = new Node(near, node.moves_ + 1, &node);
+			if (node.moves_ == 0)
+				pq.insert(*next);
+			else {
+				if (next->board_ == node.prev_->board_)
+					pq.insert(*next);
+			}
 		}
+		node = pq.delMin();
+
+		// Twin solver
+		for (Board twinnear : twinnode.board_.neighbors()) {
+			Node* twinnext = new Node(twinnear, twinnode.moves_ + 1, &twinnode);
+			if (twinnode.moves_ == 0)
+				pq.insert(*twinnext);
+			else {
+				if (twinnext->board_ == twinnode.prev_->board_)
+					pq.insert(*twinnext);
+			}
+		}
+		twinnode = twinpq.delMin();
+	}
+
+	if (node.board_.isGoal()) solveable_ = true;
+	else solveable_ = false;
+
+	totalmoves_ = node.moves_;
+	s.addFirst(node.board_);
+
+	while (node.prev_ != NULL) {
+		s.addFirst(node.prev_->board_);
+		node = *node.prev_;
 	}
 }
 
@@ -43,10 +80,11 @@ int Solver::moves() {
 	else return -1;
 }
 
-int test(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-	inFile.open(argv[1]);
+	inFile.open("8puzzle\\puzzle04.txt");
+//	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;
 		exit(1);
