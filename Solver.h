@@ -9,10 +9,13 @@ public:
 //	Iterable<Board> solution();
 
 private:
-	class Node {
-	public:
+	struct Node {
+//	public:
 		Node();
 		Node(Board &board, int moves, Node* prev);
+		~Node();
+		Node(const Node& that);
+		Node& operator=(const Node& that);
 		bool operator>(const Node& rhs);
 		friend std::ostream& operator<<(std::ostream& output, const Node& that) {
 			output << "Priority: " << that.priority_ << std::endl;

@@ -7,10 +7,14 @@
 ### To do list ###
 * I probably have to write my own minimum priority queue class - mostly done
 * Implement iterator for MinPQ
-* Figure out how to implement equivalent of an iterable interface in C++
+* Implement copy constructor and assignment operator for MinPQ
+* Figure out how to implement equivalent of an iterable interface in C++ - just using Deque
+* I think I can make this way more efficient by having Solver::Node inherit Board!
 
 ### Things I've learned ###
 * In Java, you can set an element of an array to null to help with garbage collection. Apparently, you can't do this in C++ because dynamically allocated memory is allocated as a single region, which can only be freed as a whole, not in parts. See [Link](http://stackoverflow.com/questions/12810928/free-array-element-in-c)
+* To read files from the program (instead of putting them as command line arguments), put the files/folders in the same folder as the source file.
+* For copy assignment operator, to check for self copying, use (&that == this), not (*this == that)
 
 ### Notes about git ###
 * use `git revert <commit>` to move back to an older commit

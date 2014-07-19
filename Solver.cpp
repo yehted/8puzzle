@@ -11,6 +11,19 @@ Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(p
 	priority_ = moves_ + board.manhattan();
 }
 
+Solver::Node::~Node() {
+
+}
+
+Solver::Node::Node(const Node& that) {
+
+}
+
+Solver::Node& Solver::Node::operator=(const Node& that) {
+	if (this == &that) return *this;
+	return *this;
+}
+
 bool Solver::Node::operator>(const Node& rhs) {
 	if (priority_ > rhs.priority_) return true;
 	else return false;
