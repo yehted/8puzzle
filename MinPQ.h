@@ -20,6 +20,8 @@ Sedgewick and Kevin Wayne.*/
 template <class T>
 class MinPQ {
 public:
+	class Iterator;
+
 	// Initializes empty priority queue
 	MinPQ() : N_(0), cap_(2) {
 		pq_ = new T[2];
@@ -84,6 +86,29 @@ public:
 		return min;
 	}
 
+	Iterator begin() { return Iterator(pq_ + 1); }
+	Iterator end() { return Iterator(pq_ + N_); }
+
+	class Iterator : public std::iterator <std::forward_iterator_tag, T> {
+	public:
+		Iterator() : ptr_(NULL) {}
+		~Iterator() {}
+		Iterator(T* p) : ptr_(p) {}
+		Iterator(const Iterator& other) : ptr_(other.ptr_) {}
+		Iterator& operator=(const Iterator& other) { ptr_ = other.ptr_; }
+
+		Iterator& operator++() { ++ptr_; return *this; }
+		Iterator operator++(int) { int* prev = ptr_; ptr_++; return Iterator(prev); }
+		bool operator==(const Iterator& other) { return ptr_ == other.ptr_; }
+		bool operator!=(const Iterator& other) { return !(ptr_ == other.ptr_); }
+
+		T& operator*() { return *ptr_; }
+		T* operator->() { return ptr_; }
+
+	private:
+		T* ptr_;
+	};
+
 private:
 	T* pq_;		// stores items at indices 1 to N
 	int N_;		// number of items on priority queue
@@ -95,7 +120,7 @@ private:
 		T* tmp = new T[capacity];
 		for (int i = 1; i <= N_; i++)
 			tmp[i] = pq_[i];
-		delete pq_;
+//		delete pq_;
 		pq_ = tmp;
 	}
 
@@ -140,9 +165,4 @@ private:
 		if (right <= N_ && greater(k, right)) return false;
 		return (isMinHeap(left) && isMinHeap(right));
 	}
-};
-
-template <class T>
-class HeapIterator {
-
 };

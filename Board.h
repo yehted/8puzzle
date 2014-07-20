@@ -3,17 +3,18 @@
 
 class Board {
 public:
-	Board();
-	Board(int** blocks, int N);
-	~Board();
-	Board(const Board& that);
-	Board& operator=(const Board& that);
+	Board();								// Default constructor
+	Board(int** blocks, int N);				// Constructor from 2d array
+	~Board();								// Destructor
+	Board(const Board& that);				// Copy constructor
+	Board& operator=(const Board& that);	// Copy assignment operator
 	int dimension();
 	int hamming();
-	int manhattan();
+	int manhattan() const;
 	bool isGoal();
 	Board twin();
 	bool operator==(const Board &rhs);
+	bool operator!=(const Board& rhs);
 	friend std::ostream &operator<<(std::ostream &output, const Board& that);
 	Deque<Board> neighbors();
 

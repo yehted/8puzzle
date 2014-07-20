@@ -36,7 +36,7 @@ Board::Board(const Board& that) : N_(that.N_), manhattan_(that.manhattan_) {
 }
 
 Board& Board::operator=(const Board& that) {
-	if (*this == that) return *this;
+	if (this == &that) return *this;
 
 	// Free memory
 	deleteBoard(tiles_, N_);
@@ -55,8 +55,6 @@ Board& Board::operator=(const Board& that) {
 	manhattan_ = that.manhattan_;
 	N_ = that.N_;
 
-	deleteBoard(newtiles, N_);
-
 	return *this;
 }
 
@@ -73,7 +71,7 @@ int Board::hamming() {
 	return count;
 }
 
-int Board::manhattan() { return manhattan_; }
+int Board::manhattan() const { return manhattan_; }
 
 bool Board::isGoal() { return manhattan_ == 0; }
 
@@ -99,6 +97,10 @@ bool Board::operator==(const Board& rhs) {
 	return true;
 }
 
+bool Board::operator!=(const Board& rhs) {
+	return !(*this == rhs);
+}
+
 std::ostream& operator<<(std::ostream& output, const Board& that) {
 	output << that.N_ << std::endl;
 	for (int i = 0; i < that.N_; i++) {
@@ -118,7 +120,7 @@ Deque<Board> Board::neighbors() {
 	int x = 0, y = 0;
 	// Copy board and find blanks
 	for (int i = 0; i < N_; i++) {
-		for (int j = 0; i < N_; j++) {
+		for (int j = 0; j < N_; j++) {
 			copy[i][j] = tiles_[i][j];
 			if (tiles_[i][j] == 0) {
 				x = i;
@@ -169,6 +171,7 @@ Deque<Board> Board::neighbors() {
 }
 
 void Board::deleteBoard(int** board, int N) {
+	if (N == 0) return;
 	for (int i = 0; i < N; ++i)
 		delete[] board[i];
 	delete[] board;

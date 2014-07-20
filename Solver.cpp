@@ -6,23 +6,30 @@
 
 Solver::Node::Node() : moves_(0), priority_(0), prev_(NULL) {}
 
-Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(prev) {
-	board_ = board;
+Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(prev), Board(board) {
+//	board_ = board;
+//	Board::Board(board);
 	priority_ = moves_ + board.manhattan();
 }
 
-Solver::Node::~Node() {
-
-}
-
-Solver::Node::Node(const Node& that) {
-
-}
-
-Solver::Node& Solver::Node::operator=(const Node& that) {
-	if (this == &that) return *this;
-	return *this;
-}
+//Solver::Node::~Node() {
+//	
+//}
+//
+//Solver::Node::Node(const Node& that) : moves_(that.moves_), priority_(that.priority_), prev_(that.prev_), board_(that.board_) {
+//	
+//}
+//
+//Solver::Node& Solver::Node::operator=(const Node& that) {
+//	if (this == &that) return *this;
+//	moves_ = that.moves_;
+//	priority_ = that.priority_;
+//	prev_ = that.prev_;
+//	board_ = that.board_;
+//
+//
+//	return *this;
+//}
 
 bool Solver::Node::operator>(const Node& rhs) {
 	if (priority_ > rhs.priority_) return true;
@@ -36,52 +43,56 @@ Solver::Solver(Board& initial) {
 	MinPQ<Node> twinpq;
 
 	Board twin = initial.twin();
-
+	
 	Deque<Board> s;
 
-	Node* first = new Node(initial, 0, NULL);
-	Node* firsttwin = new Node(twin, 0, NULL);
+	//Node* first = new Node(initial, 0, NULL);
+	//Node* firsttwin = new Node(twin, 0, NULL);
+	Node first(initial, 0, NULL);
+	Node firsttwin(twin, 0, NULL);
 
-	pq.insert(*first);
-	twinpq.insert(*firsttwin);
+	pq.insert(first);
+	twinpq.insert(firsttwin);
 
 	Node& node = pq.delMin();
-	Node &twinnode = twinpq.delMin();
+	Node& twinnode = twinpq.delMin();
 
-	while (!node.board_.isGoal() && !twinnode.board_.isGoal()) {
+	while (!node.isGoal() && !twinnode.isGoal()) {
 		// Main solver
-		for (Board near : node.board_.neighbors()) {
+		for (Board near : node.neighbors()) {
 			Node* next = new Node(near, node.moves_ + 1, &node);
 			if (node.moves_ == 0)
 				pq.insert(*next);
 			else {
-				if (next->board_ == node.prev_->board_)
+				if (next != node.prev_)
 					pq.insert(*next);
 			}
 		}
+		for (MinPQ<Node>::Iterator it = pq.begin(); it != pq.end(); ++it)
+			std::cout << *it << std::endl;
 		node = pq.delMin();
 
 		// Twin solver
-		for (Board twinnear : twinnode.board_.neighbors()) {
+		for (Board twinnear : twinnode.neighbors()) {
 			Node* twinnext = new Node(twinnear, twinnode.moves_ + 1, &twinnode);
 			if (twinnode.moves_ == 0)
-				pq.insert(*twinnext);
+				twinpq.insert(*twinnext);
 			else {
-				if (twinnext->board_ == twinnode.prev_->board_)
-					pq.insert(*twinnext);
+				if (twinnext != twinnode.prev_)
+					twinpq.insert(*twinnext);
 			}
 		}
 		twinnode = twinpq.delMin();
 	}
 
-	if (node.board_.isGoal()) solveable_ = true;
+	if (node.isGoal()) solveable_ = true;
 	else solveable_ = false;
 
 	totalmoves_ = node.moves_;
-	s.addFirst(node.board_);
+	s.addFirst(node);
 
 	while (node.prev_ != NULL) {
-		s.addFirst(node.prev_->board_);
+		s.addFirst(*node.prev_);
 		node = *node.prev_;
 	}
 }
