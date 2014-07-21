@@ -33,5 +33,5 @@ private:
 
 	int totalmoves_;
 	bool solveable_;
-	Deque<Node*> s;
+	Deque<Node> s;
 };

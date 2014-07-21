@@ -87,7 +87,7 @@ public:
 	}
 
 	Iterator begin() { return Iterator(pq_ + 1); }
-	Iterator end() { return Iterator(pq_ + N_); }
+	Iterator end() { return Iterator(pq_ + N_ + 1); }
 
 	class Iterator : public std::iterator <std::forward_iterator_tag, T> {
 	public:

@@ -86,7 +86,7 @@ Board Board::twin() {
 	return twin;
 }
 
-bool Board::operator==(const Board& rhs) {
+bool Board::operator==(const Board& rhs) const {
 	if (&rhs == this) return true;
 	if (&rhs == NULL) return false;
 	if (N_ != rhs.N_) return false;
@@ -97,8 +97,8 @@ bool Board::operator==(const Board& rhs) {
 	return true;
 }
 
-bool Board::operator!=(const Board& rhs) {
-	return !(*this == rhs);
+bool Board::operator!=(const Board& rhs) const {
+	return !(rhs == *this);
 }
 
 std::ostream& operator<<(std::ostream& output, const Board& that) {

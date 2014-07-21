@@ -13,8 +13,8 @@ public:
 	int manhattan() const;
 	bool isGoal();
 	Board twin();
-	bool operator==(const Board &rhs);
-	bool operator!=(const Board& rhs);
+	bool operator==(const Board &rhs) const;
+	bool operator!=(const Board& rhs) const;
 	friend std::ostream &operator<<(std::ostream &output, const Board& that);
 	Deque<Board> neighbors();
 
