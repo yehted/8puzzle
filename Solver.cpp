@@ -54,7 +54,8 @@ Solver::Solver(Board& initial) {
 
 	Node node = pq.delMin();
 //	Node* twinnode = twinpq.delMin();
-
+	std::cout << node << std::endl;
+	std::cout << "-------------------" << std::endl;
 	while (!node.isGoal() /*&& !twinnode->isGoal()*/) {
 		// Main solver
 		for (Board near : node.neighbors()) {
@@ -71,6 +72,7 @@ Solver::Solver(Board& initial) {
 			std::cout << *it << std::endl;
 		std::cout << "---------------------" << std::endl;
 		node = pq.delMin();
+		std::cout << node << std::endl;
 
 		// Twin solver
 		/*for (Board twinnear : twinnode.neighbors()) {
@@ -92,10 +94,9 @@ Solver::Solver(Board& initial) {
 	totalmoves_ = node.moves_;
 	s.addLast(node);
 
-	Node* current = &node;
-	while (current->prev_ != NULL) {
-		s.addLast(*(current->prev_));
-		current = current->prev_;
+	while (node.prev_ != NULL) {
+		s.addLast(*(node.prev_));
+		node = *(node.prev_);
 	}
 }
 

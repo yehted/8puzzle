@@ -38,7 +38,7 @@ public:
 
 	// Initializes a priorty queue with the given initial capacity
 	MinPQ(int initCapacity) : N_(0), cap_(initCapacity) {
-		pq_ = new T[initCapacity];
+		pq_ = new T[initCapacity + 1];
 	}
 
 	// Initializes a priority queue from an array of keys

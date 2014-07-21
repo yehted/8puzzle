@@ -18,9 +18,11 @@ private:
 		Node& operator=(const Node& that);*/
 		bool operator>(const Node& rhs);
 		friend std::ostream& operator<<(std::ostream& output, const Node& that) {
+			output << "This: " << &that << std::endl;
 			output << "Priority: " << that.priority_ << std::endl;
 			output << "Moves: " << that.moves_ << std::endl;
 			output << "manhattan: " << that.manhattan() << std::endl;
+			output << "previous: " << &that.prev_ << std::endl;
 			output << static_cast<const Board&>(that) << std::endl;
 			return output;
 		}
