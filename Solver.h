@@ -21,7 +21,7 @@ private:
 			output << "Priority: " << that.priority_ << std::endl;
 			output << "Moves: " << that.moves_ << std::endl;
 			output << "manhattan: " << that.manhattan() << std::endl;
-			output << that << std::endl;
+//			output << *this << std::endl;
 			return output;
 		}
 //	private:
