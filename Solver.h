@@ -21,7 +21,7 @@ private:
 			output << "Priority: " << that.priority_ << std::endl;
 			output << "Moves: " << that.moves_ << std::endl;
 			output << "manhattan: " << that.manhattan() << std::endl;
-//			output << *this << std::endl;
+			output << static_cast<const Board&>(that) << std::endl;
 			return output;
 		}
 //	private:
@@ -33,5 +33,5 @@ private:
 
 	int totalmoves_;
 	bool solveable_;
-	Deque<Board> s;
+	Deque<Node*> s;
 };
