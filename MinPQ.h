@@ -18,6 +18,14 @@ Sedgewick and Kevin Wayne.*/
 #include <stdexcept>
 
 template <class T>
+class c {
+public:
+	bool operator()(const T& i, const T& j){
+		return i > j;
+	}
+};
+
+template <class T, class Comp = c>
 class MinPQ {
 public:
 	class Iterator;
@@ -148,7 +156,8 @@ private:
 	* Helper functions for compares and swaps
 	************************************************************/
 	bool greater(int i, int j) {
-		return (pq_[i] > pq_[j]);
+		Comp c = Comp();
+		return c(pq_[i] , pq_[j]);
 	}
 
 	void exch(int i, int j) {
