@@ -90,7 +90,7 @@ public:
 		sink(1);
 //		delete pq_[N_ + 1];
 //		pq_[N_ + 1] = NULL; // Can't be done in C++
-//		if ((N_ > 0) && (N_ == (cap_ - 1) / 4)) resize(cap_ / 2);
+		if ((N_ > 0) && (N_ == (cap_ - 1) / 4)) resize(cap_ / 2);
 		assert(isMinHeap());
 		return min;
 	}
@@ -129,7 +129,7 @@ private:
 		T* tmp = new T[capacity];
 		for (int i = 1; i <= N_; i++)
 			tmp[i] = pq_[i];
-//		delete pq_;
+		delete pq_;
 		pq_ = tmp;
 		cap_ = capacity;
 	}
