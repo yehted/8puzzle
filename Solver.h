@@ -26,7 +26,9 @@ private:
 			output << "Moves: " << that.moves_ << std::endl;
 			output << "manhattan: " << that.manhattan() << std::endl;
 			output << "previous: " << that.prev_ << std::endl;
-			output << static_cast<const Board&>(that) << std::endl;
+//			output << static_cast<const Board&>(that) << std::endl;
+			const Board* b = &that;
+			output << *b;
 			return output;
 		}
 //	private:
