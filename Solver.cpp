@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+//#include <vld.h>
 
 Solver::Node::Node() : moves_(0), priority_(0), prev_(NULL) {}
 
@@ -115,8 +116,8 @@ Deque<Board*> Solver::solution() {
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-	inFile.open("8puzzle\\puzzle04.txt");
-//	inFile.open(argv[1]);
+//	inFile.open("8puzzle\\puzzle04.txt");
+	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;
 		exit(1);
