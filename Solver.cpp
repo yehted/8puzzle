@@ -65,7 +65,10 @@ Solver::Solver(Board& initial) {
 			if (node->moves_ == 0)
 				pq.insert(next);
 			else {
-				if (next != node->prev_)
+//				Board b = *next;
+//				Board rhs = *node->prev_;
+//				if (b != rhs)	// Need to fix this operator
+				if (*next != *node->prev_)
 					pq.insert(next);
 			}
 		}
@@ -116,7 +119,7 @@ Deque<Board*> Solver::solution() {
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-	inFile.open("8puzzle\\puzzle07.txt");
+	inFile.open("8puzzle\\puzzle04.txt");
 //	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;

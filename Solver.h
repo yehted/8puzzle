@@ -17,9 +17,9 @@ private:
 		/*~Node();
 		Node(const Node& that);
 		Node& operator=(const Node& that);*/
-		friend bool operator>(const Node& lhs, const Node& rhs) {
-			return lhs.priority_ > rhs.priority_;
-		}
+//		friend bool operator>(const Node& lhs, const Node& rhs) {
+//			return lhs.priority_ > rhs.priority_;
+//		}
 		friend std::ostream& operator<<(std::ostream& output, const Node& that) {
 			output << "This: " << &that << std::endl;
 			output << "Priority: " << that.priority_ << std::endl;
@@ -34,7 +34,6 @@ private:
 //	private:
 		int moves_;
 		int priority_;
-//		Board board_;
 		Node* prev_;
 	};
 
