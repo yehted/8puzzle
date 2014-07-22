@@ -148,6 +148,7 @@ private:
 			int j = 2 * k;
 			if (j < N_ && greater(j, j + 1)) j++;
 			if (!greater(k, j)) break;
+			exch(k, j);
 			k = j;
 		}
 	}

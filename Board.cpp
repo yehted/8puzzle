@@ -98,7 +98,7 @@ bool Board::operator==(const Board& rhs) const {
 }
 
 bool Board::operator!=(const Board& rhs) const {
-	return !(rhs == *this);
+	return !(*this == rhs);
 }
 
 std::ostream& operator<<(std::ostream& output, const Board& that) {

@@ -55,8 +55,8 @@ Solver::Solver(Board& initial) {
 
 	Node* node = pq.delMin();
 //	Node* twinnode = twinpq.delMin();
-//	std::cout << *node << std::endl;
-//	std::cout << "-------------------" << std::endl;
+	std::cout << *node << std::endl;
+	std::cout << "-------------------" << std::endl;
 	while (!node->isGoal() /*&& !twinnode->isGoal()*/) {
 		// Main solver
 		for (Board near : node->neighbors()) {
@@ -69,9 +69,9 @@ Solver::Solver(Board& initial) {
 					pq.insert(next);
 			}
 		}
-//		for (MinPQ<Node*, compare>::Iterator it = pq.begin(); it != pq.end(); ++it)
-//			std::cout << **it << std::endl;
-//		std::cout << "---------------------" << std::endl;
+		for (MinPQ<Node*, compare>::Iterator it = pq.begin(); it != pq.end(); ++it)
+			std::cout << **it << std::endl;
+		std::cout << "---------------------" << std::endl;
 		node = pq.delMin();
 //		std::cout << *node << std::endl;
 
@@ -116,8 +116,8 @@ Deque<Board*> Solver::solution() {
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-//	inFile.open("8puzzle\\puzzle04.txt");
-	inFile.open(argv[1]);
+	inFile.open("8puzzle\\puzzle07.txt");
+//	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;
 		exit(1);
