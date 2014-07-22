@@ -1,5 +1,5 @@
 #include "Board.h"
-//#include <vld.h>
+#include <vld.h>
 
 Board::Board() : N_(0), manhattan_(0) {}
 

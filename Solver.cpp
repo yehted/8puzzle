@@ -8,92 +8,64 @@
 Solver::Node::Node() : moves_(0), priority_(0), prev_(NULL) {}
 
 Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(prev), Board(board) {
-//	board_ = board;
-//	Board::Board(board);
 	priority_ = moves_ + board.manhattan();
 }
 
-//Solver::Node::~Node() {
-//	
-//}
-//
-//Solver::Node::Node(const Node& that) : moves_(that.moves_), priority_(that.priority_), prev_(that.prev_), board_(that.board_) {
-//	
-//}
-//
-//Solver::Node& Solver::Node::operator=(const Node& that) {
-//	if (this == &that) return *this;
-//	moves_ = that.moves_;
-//	priority_ = that.priority_;
-//	prev_ = that.prev_;
-//	board_ = that.board_;
-//
-//
-//	return *this;
-//}
-
-//bool Solver::Node::operator>(const Node& rhs) {
-//	if (priority_ > rhs.priority_) return true;
-//	else return false;
-//}
+Solver::Node::~Node() {
+	Board* b = this;
+	b->~Board();
+}
 
 Solver::Solver() : totalmoves_(0), solveable_(false) {}
 
 Solver::Solver(Board& initial) {
 	MinPQ<Node*, compare> pq;
-//	MinPQ<Node*> twinpq;
+	MinPQ<Node*, compare> twinpq;
 
-//	Board twin = initial.twin();
+	Board twin = initial.twin();
 
 	Node* first = new Node(initial, 0, NULL);
-//	Node* firsttwin = new Node(twin, 0, NULL);
-//	Node first(initial, 0, NULL);
-//	Node firsttwin(twin, 0, NULL);
+	Node* firsttwin = new Node(twin, 0, NULL);
 
 	pq.insert(first);
-//	twinpq.insert(firsttwin);
+	twinpq.insert(firsttwin);
 
 	Node* node = pq.delMin();
-//	Node* twinnode = twinpq.delMin();
-	std::cout << *node << std::endl;
-	std::cout << "-------------------" << std::endl;
-	while (!node->isGoal() /*&& !twinnode->isGoal()*/) {
+	Node* twinnode = twinpq.delMin();
+//	std::cout << *node << std::endl;
+//	std::cout << "-------------------" << std::endl;
+	while (!node->isGoal() && !twinnode->isGoal()) {
 		// Main solver
 		for (Board near : node->neighbors()) {
 			Node* next = new Node(near, node->moves_ + 1, node);
-			//Node next(near, node->moves_ + 1, node);
 			if (node->moves_ == 0)
 				pq.insert(next);
 			else {
-//				Board b = *next;
-//				Board rhs = *node->prev_;
-//				if (b != rhs)	// Need to fix this operator
 				if (*next != *node->prev_)
 					pq.insert(next);
 			}
 		}
-		for (MinPQ<Node*, compare>::Iterator it = pq.begin(); it != pq.end(); ++it)
-			std::cout << **it << std::endl;
-		std::cout << "---------------------" << std::endl;
+//		for (MinPQ<Node*, compare>::Iterator it = pq.begin(); it != pq.end(); ++it)
+//			std::cout << **it << std::endl;
+//		std::cout << "---------------------" << std::endl;
 		node = pq.delMin();
 //		std::cout << *node << std::endl;
 
 		// Twin solver
-		/*for (Board twinnear : twinnode.neighbors()) {
-			Node twinnext(twinnear, twinnode.moves_ + 1, &twinnode);
-			if (twinnode.moves_ == 0)
+		for (Board twinnear : twinnode->neighbors()) {
+			Node* twinnext = new Node(twinnear, twinnode->moves_ + 1, twinnode);
+			if (twinnode->moves_ == 0)
 				twinpq.insert(twinnext);
 			else {
-				if (&twinnext != twinnode.prev_)
+				if (*twinnext != *twinnode->prev_)
 					twinpq.insert(twinnext);
 			}
 		}
-		twinnode = twinpq.delMin();*/
+		twinnode = twinpq.delMin();
 	}
 
-	/*if (node.isGoal()) solveable_ = true;
-	else solveable_ = false;*/
-	solveable_ = true;
+	if (node->isGoal()) solveable_ = true;
+	else solveable_ = false;
 
 	totalmoves_ = node->moves_;
 	s.addFirst(node);
@@ -101,6 +73,14 @@ Solver::Solver(Board& initial) {
 	while (node->prev_ != NULL) {
 		s.addFirst(node->prev_);
 		node = node->prev_;
+	}
+
+	for (Board*b : s)
+		std::cout << *b << std::endl;
+
+	// Cleanup
+	for (Node* n : pq) {
+		delete n;
 	}
 }
 
@@ -119,7 +99,7 @@ Deque<Board*> Solver::solution() {
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-	inFile.open("8puzzle\\puzzle04.txt");
+	inFile.open("8puzzle\\puzzle01.txt");
 //	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;

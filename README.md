@@ -15,6 +15,7 @@
 * In Java, you can set an element of an array to null to help with garbage collection. Apparently, you can't do this in C++ because dynamically allocated memory is allocated as a single region, which can only be freed as a whole, not in parts. See [Link](http://stackoverflow.com/questions/12810928/free-array-element-in-c)
 * To read files from the program (instead of putting them as command line arguments), put the files/folders in the same folder as the source file.
 * For copy assignment operator, to check for self copying, use (&that == this), not (*this == that)
+* If you're going to overload operators of a derived class, you have to do all or none. If you you do none, you can use the base class' operators. If you do one, you have to do all of them.
 
 ### Notes about git ###
 * use `git revert <commit>` to move back to an older commit

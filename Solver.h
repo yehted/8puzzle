@@ -14,19 +14,15 @@ private:
 	public:		
 		Node();
 		Node(Board &board, int moves, Node* prev);
-		/*~Node();
+		~Node();
 		Node(const Node& that);
-		Node& operator=(const Node& that);*/
-//		friend bool operator>(const Node& lhs, const Node& rhs) {
-//			return lhs.priority_ > rhs.priority_;
-//		}
+		Node& operator=(const Node& that);
 		friend std::ostream& operator<<(std::ostream& output, const Node& that) {
 			output << "This: " << &that << std::endl;
 			output << "Priority: " << that.priority_ << std::endl;
 			output << "Moves: " << that.moves_ << std::endl;
 			output << "manhattan: " << that.manhattan() << std::endl;
 			output << "previous: " << that.prev_ << std::endl;
-//			output << static_cast<const Board&>(that) << std::endl;
 			const Board* b = &that;
 			output << *b;
 			return output;
