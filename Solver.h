@@ -8,6 +8,7 @@ public:
 	bool isSolvable();
 	int moves();
 	Deque<Board*> solution();
+	Deque<Node*> nodes();
 
 private:	
 	class Node : public Board {		
@@ -35,7 +36,8 @@ private:
 
 	int totalmoves_;
 	bool solveable_;
-	Deque<Board*> s;
+	Deque<Board*> solution_;
+	Deque<Node*> nodes_;
 };
 
 class compare {

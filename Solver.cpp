@@ -33,6 +33,7 @@ Solver::Solver(Board& initial) {
 		// Main solver
 		for (Board near : node->neighbors()) {
 			Node* next = new Node(near, node->moves_ + 1, node);
+			nodes_.addLast(next);
 			if (node->moves_ == 0 || *next != *node->prev_)
 				pq.insert(next);
 		}
@@ -45,6 +46,7 @@ Solver::Solver(Board& initial) {
 		// Twin solver
 		for (Board twinnear : twinnode->neighbors()) {
 			Node* twinnext = new Node(twinnear, twinnode->moves_ + 1, twinnode);
+			nodes_.addLast(twinnext);
 			if (twinnode->moves_ == 0 || *twinnext != *twinnode->prev_)
 				twinpq.insert(twinnext);
 		}
@@ -55,10 +57,10 @@ Solver::Solver(Board& initial) {
 	else solveable_ = false;
 
 	totalmoves_ = node->moves_;
-	s.addFirst(node);
+	solution_.addFirst(node);
 
 	while (node->prev_ != NULL) {
-		s.addFirst(node->prev_);
+		solution_.addFirst(node->prev_);
 		node = node->prev_;
 	}
 }
@@ -71,8 +73,12 @@ int Solver::moves() {
 }
 
 Deque<Board*> Solver::solution() {
-	if (solveable_) return s;
+	if (solveable_) return solution_;
 	else return Deque<Board*>();
+}
+
+Deque<Node*> Solver::nodes() {
+	return nodes_;
 }
 
 int main(int argc, char* argv[]) {
@@ -109,9 +115,12 @@ int main(int argc, char* argv[]) {
 			std::cout << *b << std::endl;
 	}
 
+	// Garbage collection
 	for (int i = 0; i < N; ++i)
 		delete[] tiles[i];
 	delete[] tiles;
+
+	for (Node* n : solver.nodes())
 
 	return 0;
 }
