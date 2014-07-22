@@ -31,48 +31,48 @@ Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(p
 //	return *this;
 //}
 
-bool Solver::Node::operator>(const Node& rhs) {
-	if (priority_ > rhs.priority_) return true;
-	else return false;
-}
+//bool Solver::Node::operator>(const Node& rhs) {
+//	if (priority_ > rhs.priority_) return true;
+//	else return false;
+//}
 
 Solver::Solver() : totalmoves_(0), solveable_(false) {}
 
 Solver::Solver(Board& initial) {
-	MinPQ<Node> pq;
+	MinPQ<Node*, compare> pq;
 //	MinPQ<Node*> twinpq;
 
 //	Board twin = initial.twin();
 
-//	Node* first = new Node(initial, 0, NULL);
+	Node* first = new Node(initial, 0, NULL);
 //	Node* firsttwin = new Node(twin, 0, NULL);
-	Node first(initial, 0, NULL);
+//	Node first(initial, 0, NULL);
 //	Node firsttwin(twin, 0, NULL);
 
 	pq.insert(first);
 //	twinpq.insert(firsttwin);
 
-	Node node = pq.delMin();
+	Node* node = pq.delMin();
 //	Node* twinnode = twinpq.delMin();
-	std::cout << node << std::endl;
-	std::cout << "-------------------" << std::endl;
-	while (!node.isGoal() /*&& !twinnode->isGoal()*/) {
+//	std::cout << *node << std::endl;
+//	std::cout << "-------------------" << std::endl;
+	while (!node->isGoal() /*&& !twinnode->isGoal()*/) {
 		// Main solver
-		for (Board near : node.neighbors()) {
-			//Node* next = new Node(near, node.moves_ + 1, node);
-			Node next(near, node.moves_ + 1, &node);
-			if (node.moves_ == 0)
+		for (Board near : node->neighbors()) {
+			Node* next = new Node(near, node->moves_ + 1, node);
+			//Node next(near, node->moves_ + 1, node);
+			if (node->moves_ == 0)
 				pq.insert(next);
 			else {
-				if (next != *(node.prev_))
+				if (next != node->prev_)
 					pq.insert(next);
 			}
 		}
-		for (MinPQ<Node>::Iterator it = pq.begin(); it != pq.end(); ++it)
-			std::cout << *it << std::endl;
-		std::cout << "---------------------" << std::endl;
+//		for (MinPQ<Node*, compare>::Iterator it = pq.begin(); it != pq.end(); ++it)
+//			std::cout << **it << std::endl;
+//		std::cout << "---------------------" << std::endl;
 		node = pq.delMin();
-		std::cout << node << std::endl;
+//		std::cout << *node << std::endl;
 
 		// Twin solver
 		/*for (Board twinnear : twinnode.neighbors()) {
@@ -91,12 +91,12 @@ Solver::Solver(Board& initial) {
 	else solveable_ = false;*/
 	solveable_ = true;
 
-	totalmoves_ = node.moves_;
-	s.addLast(node);
+	totalmoves_ = node->moves_;
+	s.addFirst(node);
 
-	while (node.prev_ != NULL) {
-		s.addLast(*(node.prev_));
-		node = *(node.prev_);
+	while (node->prev_ != NULL) {
+		s.addFirst(node->prev_);
+		node = node->prev_;
 	}
 }
 
@@ -105,6 +105,11 @@ bool Solver::isSolvable() { return solveable_; }
 int Solver::moves() {
 	if (solveable_) return totalmoves_;
 	else return -1;
+}
+
+Deque<Board*> Solver::solution() {
+	if (solveable_) return s;
+	else return Deque<Board*>();
 }
 
 int main(int argc, char* argv[]) {
@@ -137,7 +142,8 @@ int main(int argc, char* argv[]) {
 		cout << "No solution possible!" << endl;
 	else {
 		cout << "Minimum number of moves = " << solver.moves() << endl;
-	//	for_each()
+		for (Board* b : solver.solution())
+			std::cout << *b << std::endl;
 	}
 	return 0;
 }

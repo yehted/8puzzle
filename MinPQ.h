@@ -25,7 +25,7 @@ public:
 	}
 };
 
-template <class T, class Comp = c>
+template <class T, class Comp = c<T>>
 class MinPQ {
 public:
 	class Iterator;
