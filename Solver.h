@@ -3,12 +3,12 @@
 class Solver {
 	friend class compare;
 public:
-	Solver();
-	Solver(Board& initial);
-	bool isSolvable();
-	int moves();
-	Deque<Board*> solution();
-	void deleteNodes();
+	Solver();						// Empty constructor
+	~Solver();						// Destructor, deletes all nodes created by neighbor()
+	Solver(Board& initial);			// Default constructor from initial board
+	bool isSolvable();				// Returns whether board is solvable
+	int moves();					// Returns minimum number of moves to solve puzzle
+	Deque<Board*> solution();		// Deque containing sequence of moves for solution
 
 private:	
 	class Node : public Board {		
@@ -35,6 +35,8 @@ private:
 	bool solveable_;			// Whether the board is solveable
 	Deque<Board*> solution_;	// Deque containing sequence of moves to solution
 	Deque<Node*> nodes_;		// Deque of all the created nodes, for easier garbage collection
+
+	void deleteNodes();			// Helper function to clean up memory
 };
 
 class compare {		// Custom comparator for Node pointers

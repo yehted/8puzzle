@@ -191,19 +191,28 @@ int** Board::createBoard(int N) {
 	return tiles;
 }
 
+// Unit test for board construction, manhattan, and destruction
 int test(int argc, char* argv[]){
 	int N = 3;
+
+	// Create 2D array
 	int** board = new int*[N];
 	for (int i = 0; i < N; ++i)
 		board[i] = new int[N];
 
+	// Populate board
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++)
 			board[i][j] = N * i + j + 1;
 	}
-	board[N - 1][N - 1] = 0;
+	board[N - 1][N - 1] = 0;		// Create 0 element
 	Board testboard(board, N);
 	std::cout << testboard;
 	std::cout << "Manhattan: " << testboard.manhattan() << std::endl;
+
+	for (int i = 0; i < N; ++i)
+		delete[] board[i];
+	delete[] board;
+
 	return 0;
 }

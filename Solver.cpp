@@ -14,8 +14,13 @@ Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(p
 // Empty solver constructor
 Solver::Solver() : totalmoves_(0), solveable_(false) {}
 
+// Destructor
+Solver::~Solver() {
+	deleteNodes();
+}
+
 // Default solver constructor
-Solver::Solver(Board& initial) {
+Solver::Solver(Board& initial) : totalmoves_(-1), solveable_(false) {
 	MinPQ<Node*, compare> pq;
 	MinPQ<Node*, compare> twinpq;
 
@@ -32,8 +37,11 @@ Solver::Solver(Board& initial) {
 
 	Node* node = pq.delMin();
 	Node* twinnode = twinpq.delMin();
+
+	// Initial node check
 //	std::cout << *node << std::endl;
 //	std::cout << "-------------------" << std::endl;
+	
 	while (!node->isGoal() && !twinnode->isGoal()) {
 		// Main solver
 		for (Board near : node->neighbors()) {
@@ -42,13 +50,15 @@ Solver::Solver(Board& initial) {
 			if (node->moves_ == 0 || *next != *node->prev_)
 				pq.insert(next);
 		}
+
+		// Prints priority queue
 //		for (MinPQ<Node*, compare>::Iterator it = pq.begin(); it != pq.end(); ++it)
 //			std::cout << **it << std::endl;
 //		std::cout << "---------------------" << std::endl;
-		node = pq.delMin();
-//		std::cout << *node << std::endl;
 
-		// Twin solver
+		node = pq.delMin();
+
+		// Twin solver, to check for solvability. If twin pops out first, then origina puzzle is not solvable.
 		for (Board twinnear : twinnode->neighbors()) {
 			Node* twinnext = new Node(twinnear, twinnode->moves_ + 1, twinnode);
 			nodes_.addLast(twinnext);
@@ -59,11 +69,11 @@ Solver::Solver(Board& initial) {
 	}
 
 	if (node->isGoal()) solveable_ = true;
-	else solveable_ = false;
 
 	totalmoves_ = node->moves_;
 	solution_.addFirst(node);
 
+	// Populates solution deque by tracing completed puzzle back to start.
 	while (node->prev_ != NULL) {
 		solution_.addFirst(node->prev_);
 		node = node->prev_;
@@ -90,7 +100,7 @@ void Solver::deleteNodes() {
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-//	inFile.open("8puzzle\\puzzle04.txt");
+//	inFile.open("8puzzle\\puzzle04.txt");		// For debugging, preselect file
 	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;
@@ -98,10 +108,12 @@ int main(int argc, char* argv[]) {
 	}
 	int N;
 	inFile >> N;
+
 	// Allocate new memory
 	int** tiles = new int*[N];
 	for (int i = 0; i < N; ++i)
 		tiles[i] = new int[N];
+
 	// Input elements
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++)
@@ -125,8 +137,6 @@ int main(int argc, char* argv[]) {
 	for (int i = 0; i < N; ++i)
 		delete[] tiles[i];
 	delete[] tiles;
-
-	solver.deleteNodes();
 
 	return 0;
 }
