@@ -18,7 +18,7 @@ Sedgewick and Kevin Wayne.*/
 #include <stdexcept>
 
 template <class T>
-class c {
+class c {		// Default comparator class
 public:
 	bool operator()(const T& i, const T& j){
 		return i > j;
@@ -88,8 +88,8 @@ public:
 		exch(1, N_);
 		T min = pq_[N_--];
 		sink(1);
-//		delete pq_[N_ + 1];
-//		pq_[N_ + 1] = NULL; // Can't be done in C++
+//		delete pq_[N_ + 1];			// Messes up program because it kills the object at the pointer
+//		pq_[N_ + 1] = NULL;			// Leaves dangling pointer
 		if ((N_ > 0) && (N_ == (cap_ - 1) / 4)) resize(cap_ / 2);
 		assert(isMinHeap());
 		return min;

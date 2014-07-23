@@ -3,16 +3,19 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-//#include <vld.h>
 
+// Empty constructor
 Solver::Node::Node() : moves_(0), priority_(0), prev_(NULL) {}
 
+// Default constructor from board, moves, and previous state
 Solver::Node::Node(Board& board, int moves, Node* prev) : moves_(moves), prev_(prev), Board(board) {
 	priority_ = moves_ + board.manhattan();
 }
 
+// Empty solver constructor
 Solver::Solver() : totalmoves_(0), solveable_(false) {}
 
+// Default solver constructor
 Solver::Solver(Board& initial) {
 	MinPQ<Node*, compare> pq;
 	MinPQ<Node*, compare> twinpq;
@@ -88,8 +91,8 @@ void Solver::deleteNodes() {
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-	inFile.open("8puzzle\\puzzle04.txt");
-//	inFile.open(argv[1]);
+//	inFile.open("8puzzle\\puzzle04.txt");
+	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;
 		exit(1);

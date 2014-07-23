@@ -1,8 +1,11 @@
 #include "Board.h"
+#include <assert.h>
 #include <vld.h>
 
+// Empty board constructor
 Board::Board() : N_(0), manhattan_(0) {}
 
+// Default constructor from 2d array. Manhattan is cached
 Board::Board(int** blocks, int N) : N_(N), manhattan_(0) {
 	tiles_ = createBoard(N);
 
@@ -22,10 +25,12 @@ Board::Board(int** blocks, int N) : N_(N), manhattan_(0) {
 	}
 }
 
+// Destructor
 Board::~Board() {
 	deleteBoard(tiles_, N_);
 }
 
+// Copy constructor
 Board::Board(const Board& that) : N_(that.N_), manhattan_(that.manhattan_) {
 	tiles_ = createBoard(that.N_);
 
@@ -35,6 +40,7 @@ Board::Board(const Board& that) : N_(that.N_), manhattan_(that.manhattan_) {
 	}
 }
 
+// Copy assignment operator
 Board& Board::operator=(const Board& that) {
 	if (this == &that) return *this;
 
@@ -86,6 +92,7 @@ Board Board::twin() {
 	return twin;
 }
 
+// Equality operator overload
 bool Board::operator==(const Board& rhs) const {
 	if (&rhs == this) return true;
 	if (&rhs == NULL) return false;
