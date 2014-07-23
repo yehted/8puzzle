@@ -97,7 +97,7 @@ void Solver::deleteNodes() {
 		delete n;
 }
 
-int main(int argc, char* argv[]) {
+int SolverTest(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
 //	inFile.open("8puzzle\\puzzle04.txt");		// For debugging, preselect file

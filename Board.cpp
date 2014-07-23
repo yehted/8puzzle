@@ -192,7 +192,7 @@ int** Board::createBoard(int N) {
 }
 
 // Unit test for board construction, manhattan, and destruction
-int test(int argc, char* argv[]){
+int BoardTest(int argc, char* argv[]){
 	int N = 3;
 
 	// Create 2D array
