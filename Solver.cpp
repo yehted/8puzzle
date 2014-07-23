@@ -2,7 +2,6 @@
 #include "MinPQ.h"
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 
 // Empty constructor
 Solver::Node::Node() : moves_(0), priority_(0), prev_(NULL) {}
