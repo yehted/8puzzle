@@ -22,6 +22,9 @@ Solver::Solver(Board& initial) {
 	Node* first = new Node(initial, 0, NULL);
 	Node* firsttwin = new Node(twin, 0, NULL);
 
+	nodes_.addLast(first);
+	nodes_.addLast(firsttwin);
+
 	pq.insert(first);
 	twinpq.insert(firsttwin);
 
@@ -77,14 +80,15 @@ Deque<Board*> Solver::solution() {
 	else return Deque<Board*>();
 }
 
-Deque<Node*> Solver::nodes() {
-	return nodes_;
+void Solver::deleteNodes() {
+	for (Node* n : nodes_)
+		delete n;
 }
 
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-	inFile.open("8puzzle\\puzzle01.txt");
+	inFile.open("8puzzle\\puzzle04.txt");
 //	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;
@@ -120,7 +124,7 @@ int main(int argc, char* argv[]) {
 		delete[] tiles[i];
 	delete[] tiles;
 
-	for (Node* n : solver.nodes())
+	solver.deleteNodes();
 
 	return 0;
 }

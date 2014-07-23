@@ -1,6 +1,7 @@
 #include "Board.h"
-class Node;
+
 class Solver {
+	class Node;
 	friend class compare;
 public:
 	Solver();
@@ -8,16 +9,16 @@ public:
 	bool isSolvable();
 	int moves();
 	Deque<Board*> solution();
-	Deque<Node*> nodes();
+	void deleteNodes();
 
 private:	
 	class Node : public Board {		
 	public:		
 		Node();
 		Node(Board &board, int moves, Node* prev);
-		~Node();
-		Node(const Node& that);
-		Node& operator=(const Node& that);
+//		~Node();
+//		Node(const Node& that);
+//		Node& operator=(const Node& that);
 		friend std::ostream& operator<<(std::ostream& output, const Node& that) {
 			output << "This: " << &that << std::endl;
 			output << "Priority: " << that.priority_ << std::endl;
