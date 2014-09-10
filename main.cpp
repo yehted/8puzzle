@@ -24,7 +24,8 @@
 int main(int argc, char* argv[]) {
 	using namespace std;
 	ifstream inFile;
-	inFile.open(argv[1]);
+	inFile.open("8puzzle\\puzzle04.txt");		// For debugging, preselect file
+//	inFile.open(argv[1]);
 	if (!inFile.is_open()) {
 		cerr << "File not opened!" << endl;
 		exit(1);

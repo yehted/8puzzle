@@ -58,7 +58,7 @@ Solver::Solver(Board& initial) : totalmoves_(-1), solveable_(false) {
 
 		node = pq.delMin();
 
-		// Twin solver, to check for solvability. If twin pops out first, then origina puzzle is not solvable.
+		// Twin solver, to check for solvability. If twin pops out first, then original puzzle is not solvable.
 		for (Board twinnear : twinnode->neighbors()) {
 			Node* twinnext = new Node(twinnear, twinnode->moves_ + 1, twinnode);
 			nodes_.addLast(twinnext);

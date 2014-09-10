@@ -13,6 +13,7 @@ Board::Board(int** blocks, int N) : N_(N), manhattan_(0) {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
 			tiles_[i][j] = blocks[i][j];	// Copies number at (i, j)
+
 			// Calculates manhattan
 			if (tiles_[i][j] == 0) continue;
 			if (tiles_[i][j] != N * i + j + 1) {
@@ -67,6 +68,7 @@ Board& Board::operator=(const Board& that) {
 int Board::dimension() { return N_; }
 
 int Board::hamming() {
+	// Calculates hamming number
 	int count = 0;
 	for (int i = 0; i < N_; i++) {
 		for (int j = 0; j < N_; j++) {
@@ -81,6 +83,7 @@ int Board::manhattan() const { return manhattan_; }
 
 bool Board::isGoal() { return manhattan_ == 0; }
 
+// Generates twin board with two non-zero tiles swapped
 Board Board::twin() {
 	Board twin(tiles_, N_);
 	int i = 0;
@@ -104,10 +107,12 @@ bool Board::operator==(const Board& rhs) const {
 	return true;
 }
 
+// Inequality operator
 bool Board::operator!=(const Board& rhs) const {
 	return !(*this == rhs);
 }
 
+// Output operator
 std::ostream& operator<<(std::ostream& output, const Board& that) {
 	output << that.N_ << std::endl;
 	for (int i = 0; i < that.N_; i++) {
@@ -120,6 +125,7 @@ std::ostream& operator<<(std::ostream& output, const Board& that) {
 	return output;
 }
 
+// Returns all possible neighbor boards
 Deque<Board> Board::neighbors() {
 	Deque<Board> s;
 	int** copy = createBoard(N_);
@@ -177,6 +183,7 @@ Deque<Board> Board::neighbors() {
 	return s;
 }
 
+// Helper function for deleting 2D arrays
 void Board::deleteBoard(int** board, int N) {
 	if (N == 0) return;
 	for (int i = 0; i < N; ++i)
@@ -184,6 +191,7 @@ void Board::deleteBoard(int** board, int N) {
 	delete[] board;
 }
 
+// Helper function for creating 2D arrays
 int** Board::createBoard(int N) {
 	int** tiles = new int*[N];
 	for (int i = 0; i < N; ++i)
